@@ -279,10 +279,18 @@ def post_etl_processing(client, train_data, test_data):
 
     y_train = build_labels(train_data)
     y_test = build_labels(test_data)
+    
+    X_train = X_train.persist()
+    X_test = X_test.persist()
+    y_train = y_train.persist()
+    y_test = y_test.persist()
+    
+    time.sleep(10)
 
     # Perform ML
     model = DistMNB(client=client, alpha=0.001)
     model.fit(X_train, y_train)
+    return None
 
     ### this regression seems to be coming from here
     test_pred_st = time.time()
@@ -340,6 +348,7 @@ def main(client, config):
     final_data, acc, prec, cmat = post_etl_processing(
         client=client, train_data=train_data, test_data=test_data
     )
+
     payload = {
         "df": final_data,
         "acc": acc,
@@ -364,6 +373,7 @@ if __name__ == "__main__":
     from cuml.dask.naive_bayes import MultinomialNB as DistMNB
     from cuml.dask.common.input_utils import DistributedDataHandler
     from cuml.dask.common import to_dask_cudf
+
 
     config = gpubdb_argparser()
     client, bc = attach_to_cluster(config)

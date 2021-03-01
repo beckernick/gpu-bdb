@@ -108,8 +108,26 @@ def attach_to_cluster(config, create_blazing_context=False):
     # CuPy should use RMM on all worker and client processes
     import cupy as cp
     import rmm
+    
+#     def rmm_init():
+#         rmm.reinitialize(
+#             pool_allocator=True,
+#             initial_pool_size=parse_bytes("25GB"),
+#             maximum_pool_size=parse_bytes("26GB")
+#         )
+#         return 0
+    
+#     client.run(rmm_init)
+    
     cp.cuda.set_allocator(rmm.rmm_cupy_allocator)
     client.run(cp.cuda.set_allocator, rmm.rmm_cupy_allocator)
+    
+    def init_cublas():
+        from cupy.cuda import cublas
+        cublas.create() # allocates 64MB of GPU memory and returns a handle
+        return None
+    
+    client.run(init_cublas)
 
     # Save worker information
     # Assumes all GPUs are the same size

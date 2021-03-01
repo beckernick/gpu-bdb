@@ -10,15 +10,15 @@ else
 fi
 
 MAX_SYSTEM_MEMORY=$(free -m | awk '/^Mem:/{print $2}')M
-DEVICE_MEMORY_LIMIT="15GB"
-POOL_SIZE="30GB"
+DEVICE_MEMORY_LIMIT="25GB"
+POOL_SIZE="28GB"
 
-GPU_BDB_HOME=$HOME/gpu-bdb
-CONDA_ENV_NAME="rapids-gpu-bdb"
-CONDA_ENV_PATH="/home/$USERNAME/conda/etc/profile.d/conda.sh"
+GPU_BDB_HOME=/raid/nicholasb/dev/gpu-bdb
+CONDA_ENV_NAME="rapids-gpu-bdb-automated-tests"
+CONDA_ENV_PATH="/raid/$USERNAME/miniconda3/etc/profile.d/conda.sh"
 
 # Used for writing scheduler file and logs to shared storage
-LOCAL_DIRECTORY=$HOME/dask-local-directory
+LOCAL_DIRECTORY=/raid/nicholasb/dask-local-directory
 SCHEDULER_FILE=$LOCAL_DIRECTORY/scheduler.json
 LOGDIR="$LOCAL_DIRECTORY/logs"
 WORKER_DIR=/tmp/$USERNAME/gpu-bdb-dask-workers/

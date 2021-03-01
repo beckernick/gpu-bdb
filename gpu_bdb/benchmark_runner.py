@@ -22,6 +22,15 @@ def load_query(qnum, fn):
 
 
 dask_qnums = [str(i).zfill(2) for i in range(1, 31)]
+dask_qnums = [
+#     "01",
+#     "09",
+#     "03",
+    "21",
+    "27",
+    "01",
+#     "28"
+]
 bsql_qnums = [str(i).zfill(2) for i in range(1, 31)]
 
 
@@ -39,6 +48,8 @@ if __name__ == "__main__":
         qnum: load_query(qnum, f"queries/q{qnum}/gpu_bdb_query_{qnum}_sql.py")
         for qnum in bsql_qnums
     }
+    
+    time.sleep(10)
 
     config = gpubdb_argparser()
     config["run_id"] = uuid.uuid4().hex
